@@ -1,38 +1,48 @@
-import { useEffect , useState} from 'react'
-import axios from 'axios'
-import './App.css'
-import Courses from '../public/Companents/Courses/Courses'
-import Loading from '../public/Companents/Loading/Loading'
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import './App.css';
+import Courses from '../public/Companents/Courses/Courses';
+import Loading from '../public/Companents/Loading/Loading';
 
 function App() {
-  const [courses, setCourses] = useState([])
-  const [loading, setLoading] = useState(true)
+  const [courses, setCourses] = useState([]);
+  const [loading, setLoading] = useState(true);
+
   const deleteCourse = (id) => {
-    const afterDeleteCourses = courses.filter((course) => course.id !== id)
-    setCourses(afterDeleteCourses)
-  }
+    const afterDeleteCourses = courses.filter((course) => course.id !== id);
+    setCourses(afterDeleteCourses);
+  };
+
   const fetchCourses = async () => {
-    setLoading(true)
-    try{
+    setLoading(true);
+    try {
       const response = await axios.get('http://localhost:3000/courses');
       setCourses(response.data);
-      setLoading(false)
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
     }
-    catch(error){
-      setLoading(false)
-      console.log(error)
-    }
-  }
+  };
+
   useEffect(() => {
     fetchCourses();
-  } , [])
+  }, []);
+
   return (
-    <>
-    <div className='App'>
-      {loading ? (<Loading/>) : (<Courses courses={courses} removeCourse={deleteCourse}/>)}
+    <div className="App">
+      {loading ? (
+        <Loading />
+      ) : courses.length === 0 ? (
+        <div className='deleteCourse'>
+          <h2>Kurs Bulunamadı</h2>
+          <button onClick={fetchCourses}>Yenile</button>
+        </div>
+      ) : (
+        <Courses courses={courses} removeCourse={deleteCourse} />
+      )}
     </div>
-    </>
-  )
+  );
 }
 
-export default App
+export default App;
