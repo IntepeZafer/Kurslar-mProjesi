@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 function Course({id , title , content , price , removeOneCourse}) {
     return ( 
     <div className="card">
@@ -9,6 +10,14 @@ function Course({id , title , content , price , removeOneCourse}) {
         <button className="cardDelete" onClick={() => removeOneCourse(id)}>Sil</button>
     </div> 
 );
+}
+
+Course.propTypes = {
+    id: PropTypes.number.isRequired,
+    title: PropTypes.string.isRequired,
+    content: PropTypes.string.isRequired,
+    price: PropTypes.number.isRequired,
+    removeOneCourse: PropTypes.func.isRequired
 }
 
 export default Course;
